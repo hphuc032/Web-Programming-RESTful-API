@@ -1,4 +1,4 @@
-# LTWeb REST API + AJAX Product Category
+# restful-API-ex8
 
 ## Student Assignment
 

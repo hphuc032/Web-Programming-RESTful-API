@@ -4,7 +4,7 @@ $passwordPointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secure
 try {
     $env:DB_USERNAME = if ($env:DB_USERNAME) { $env:DB_USERNAME } else { "root" }
     $env:DB_PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($passwordPointer)
-    $jarPath = Join-Path $PSScriptRoot "target\ltweb-rest-ajax-product-category-1.0.0.jar"
+    $jarPath = Join-Path $PSScriptRoot "target\restful-API-ex8-1.0.0.jar"
     if (-not (Test-Path -LiteralPath $jarPath)) { throw "Chưa có JAR. Chạy 'mvn clean package' trước." }
     java -jar $jarPath
 } finally {
