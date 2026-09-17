@@ -1,10 +1,9 @@
 target/
-
-# Product images generated at runtime
-uploads/products/*
-!uploads/products/.gitkeep
-
-# Local files that may contain credentials
+.idea/
+.vscode/
+*.log
+uploads/
 .env
 application-local.properties
-src/main/resources/application-local.properties
+**/application-local.properties
+.tools/

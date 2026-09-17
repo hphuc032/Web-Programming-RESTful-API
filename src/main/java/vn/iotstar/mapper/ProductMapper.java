@@ -1,48 +1,21 @@
 package vn.iotstar.mapper;
-
 import org.springframework.stereotype.Component;
-
-import vn.iotstar.dto.ProductDTO;
+import vn.iotstar.dto.*;
 import vn.iotstar.entity.Product;
 
 @Component
 public class ProductMapper {
-
-    public ProductDTO toDTO(Product entity) {
-        if (entity == null) {
-            return null;
-        }
-
-        return ProductDTO.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .price(entity.getPrice())
-                .quantity(entity.getQuantity())
-                .description(entity.getDescription())
-                .images(entity.getImages())
-                .build();
-    }
-
-    public Product toEntity(ProductDTO dto) {
-        if (dto == null) {
-            return null;
-        }
-
-        return Product.builder()
-                .id(dto.getId())
-                .name(dto.getName())
-                .price(dto.getPrice())
-                .quantity(dto.getQuantity())
-                .description(dto.getDescription())
-                .images(dto.getImages())
-                .build();
-    }
-
-    public void updateEntity(ProductDTO dto, Product entity) {
-        entity.setName(dto.getName());
-        entity.setPrice(dto.getPrice());
-        entity.setQuantity(dto.getQuantity());
-        entity.setDescription(dto.getDescription());
-        entity.setImages(dto.getImages());
-    }
+ public ProductView toDTO(Product entity) {
+  return new ProductView(entity.getProductId(), entity.getProductName(), entity.getQuantity(),
+   entity.getUnitPrice(), entity.getImages(), entity.getDescription(), entity.getDiscount(),
+   entity.getCreateDate(), entity.getStatus(), CategoryView.from(entity.getCategory()));
+ }
+ public void updateEntity(ProductDTO dto, Product entity) {
+  entity.setProductName(dto.getProductName().trim());
+  entity.setQuantity(dto.getQuantity());
+  entity.setUnitPrice(dto.getUnitPrice());
+  entity.setDescription(dto.getDescription());
+  entity.setDiscount(dto.getDiscount());
+  entity.setStatus(dto.getStatus());
+ }
 }

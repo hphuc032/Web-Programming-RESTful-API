@@ -1,0 +1,4 @@
+# Copy file này thành application-local.properties và sửa theo MySQL local.
+spring.datasource.url=jdbc:mysql://localhost:3306/ltweb_rest_ajax?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Ho_Chi_Minh&characterEncoding=UTF-8
+spring.datasource.username=root
+spring.datasource.password=your_mysql_password

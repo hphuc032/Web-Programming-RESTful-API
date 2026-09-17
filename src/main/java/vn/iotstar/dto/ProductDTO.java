@@ -1,45 +1,26 @@
 package vn.iotstar.dto;
-
-import java.math.BigDecimal;
-
+import jakarta.validation.constraints.*;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class ProductDTO {
-
-    private Long id;
-
-    @NotBlank(message = "Tên sản phẩm không được để trống")
-    @Size(max = 200, message = "Tên sản phẩm tối đa 200 ký tự")
-    private String name;
-
-    @NotNull(message = "Giá không được để trống")
-    @DecimalMin(value = "0", message = "Giá phải lớn hơn hoặc bằng 0")
-    private BigDecimal price;
-
-    @NotNull(message = "Số lượng không được để trống")
-    @Min(value = 0, message = "Số lượng phải lớn hơn hoặc bằng 0")
-    private Integer quantity;
-
-    @Size(max = 1000, message = "Mô tả tối đa 1000 ký tự")
-    private String description;
-
-    private String images;
-
-    private MultipartFile image;
+ @NotBlank(message = "Tên sản phẩm không được để trống")
+ @Size(max = 200, message = "Tên sản phẩm tối đa 200 ký tự")
+ private String productName;
+ @NotNull(message = "Số lượng là bắt buộc") @Min(value = 0, message = "Số lượng phải >= 0")
+ private Integer quantity;
+ @NotNull(message = "Đơn giá là bắt buộc") @DecimalMin(value = "0", message = "Đơn giá phải >= 0")
+ @DecimalMax(value = "1000000000000", message = "Đơn giá tối đa 1.000 tỷ")
+ private Double unitPrice;
+ @Size(max = 2000, message = "Mô tả tối đa 2000 ký tự")
+ private String description;
+ @NotNull(message = "Giảm giá là bắt buộc") @DecimalMin(value = "0", message = "Giảm giá phải >= 0")
+ @DecimalMax(value = "100", message = "Giảm giá tối đa 100%")
+ private Double discount;
+ @NotNull(message = "Trạng thái là bắt buộc") @Min(0) @Max(1)
+ private Short status;
+ @NotNull(message = "Danh mục là bắt buộc") @Positive
+ private Long categoryId;
+ private MultipartFile image;
 }

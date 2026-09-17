@@ -1,18 +1,16 @@
 package vn.iotstar.services;
-
-import org.springframework.data.domain.Page;
-
-import vn.iotstar.dto.ProductDTO;
+import java.util.*;
+import org.springframework.data.domain.*;
+import vn.iotstar.dto.*;
 
 public interface ProductService {
-
-    Page<ProductDTO> findAll(String keyword, int page, int size);
-
-    ProductDTO findById(Long id);
-
-    ProductDTO create(ProductDTO dto);
-
-    ProductDTO update(Long id, ProductDTO dto);
-
-    void delete(Long id);
+ List<ProductView> findAll();
+ ProductView findById(Long id);
+ ProductView save(Long id, ProductDTO form);
+ void delete(Long id);
+ void deleteById(Long id);
+ long count();
+ Optional<ProductView> findByProductName(String name);
+ List<ProductView> findByProductNameContainingIgnoreCase(String name);
+ Page<ProductView> findByProductNameContainingIgnoreCase(String name, Pageable pageable);
 }
