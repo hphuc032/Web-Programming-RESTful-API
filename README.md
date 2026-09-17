@@ -1,102 +1,95 @@
-# Project 1 - Product Management
+# LTWeb REST API + AJAX Product Category
+
+## Student Assignment
+
+Project 1 - REST API + AJAX CRUD Product & Category.
+
+Project dùng Springdoc OpenAPI để cung cấp Swagger 3 tương thích Spring Boot 3. Không dùng Springfox vì thư viện này không tương thích tốt với Jakarta/Spring Boot 3. Project không triển khai GraphQL; GraphQL thuộc Project 2.
+
+## Technologies
+
+- Java 17
+- Spring Boot 3.1.5
+- Maven
+- Spring Data JPA / Hibernate
+- MySQL 8
+- Validation và Lombok
+- Springdoc OpenAPI / Swagger UI
+- Thymeleaf page shell
+- jQuery 3.6.4 AJAX và Bootstrap 5
 
 ## Features
 
-- CRUD Product
-- DTO + Mapper
-- Validation
-- Search
-- Pagination
-- Single Image Upload
+- Category CRUD bằng REST API và AJAX
+- Product CRUD bằng REST API và AJAX
+- Product chọn Category được tải từ database
+- Upload icon/ảnh bằng tên UUID, kiểm tra định dạng và chống path traversal
+- Giữ ảnh cũ khi update không gửi file mới
+- Chặn xóa Category đang có Product bằng HTTP 409
+- Response thống nhất: `status`, `message`, `body`
+- Swagger API documentation
 
-## Tech Stack
-
-- Java 21
-- Spring Boot 4.0.0
-- Spring MVC, Spring Data JPA, Hibernate
-- Thymeleaf, Thymeleaf Layout Dialect, Bootstrap 5
-- Jakarta Validation, Lombok, Maven
-- MySQL
-
-## Database Configuration
-
-Ứng dụng dùng MySQL tại `localhost:3306`, database mặc định `webst2`. URL có thể được thay đổi bằng biến môi trường `DB_URL`. Tạo database trước khi chạy nếu tài khoản không có quyền tự tạo:
+## Database setup
 
 ```sql
-CREATE DATABASE webst2
-    CHARACTER SET utf8mb4
-    COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE ltweb_rest_ajax
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
 ```
 
-Không lưu mật khẩu thật trong source code. Cách khuyến nghị là chạy script bảo mật; mật khẩu được nhập ẩn và chỉ tồn tại trong tiến trình ứng dụng:
+Copy `application-local.properties.example` thành `application-local.properties`, sau đó sửa duy nhất các giá trị local:
 
-```powershell
-.\run-local.ps1
+```properties
+spring.datasource.username=root
+spring.datasource.password=your_mysql_password
 ```
 
-Hoặc tự thiết lập biến môi trường chỉ trong phiên terminal hiện tại:
+File `application-local.properties` đã được `.gitignore` để không commit mật khẩu. URL mặc định nằm trong `src/main/resources/application.properties` và có thể ghi đè bằng `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`.
+
+## Run
+
+Yêu cầu JDK 17 và MySQL đang chạy.
 
 ```powershell
-$env:DB_USERNAME = "root"
-$env:DB_PASSWORD = "your-password"
+mvn clean test
+mvn spring-boot:run
 ```
 
-Hibernate dùng `spring.jpa.hibernate.ddl-auto=update` và sẽ tạo/cập nhật bảng `products`.
-
-## How to Run
+Hoặc build JAR rồi dùng script nhập password an toàn:
 
 ```powershell
-cd springboot-product-single-image
 mvn clean package
-.\run-local.ps1
+./run-local.ps1
 ```
 
-`run-local.ps1` chạy file JAR đã build và không ghi mật khẩu xuống ổ đĩa.
+## URLs
 
-## Main URL
+- Home: http://localhost:8080/
+- Category: http://localhost:8080/categories
+- Product: http://localhost:8080/products
+- Swagger: http://localhost:8080/swagger-ui/index.html
+- OpenAPI JSON: http://localhost:8080/v3/api-docs
 
-[http://localhost:8099/products](http://localhost:8099/products)
+## API endpoints
 
-## Upload Directory
+### Category API
 
-Ảnh được lưu vật lý tại:
+| Method | Endpoint | Mô tả |
+|---|---|---|
+| GET | `/api/category` | Lấy tất cả Category |
+| POST | `/api/category/getCategory` | Lấy Category theo parameter `id` |
+| POST | `/api/category/addCategory` | Thêm Category bằng multipart/form-data |
+| PUT | `/api/category/updateCategory?categoryId={id}` | Sửa Category; file trống giữ icon cũ |
+| DELETE | `/api/category/deleteCategory?categoryId={id}` | Xóa Category |
 
-```text
-uploads/products/
-```
+### Product API
 
-MySQL chỉ lưu tên file UUID, không lưu binary hoặc Base64.
+| Method | Endpoint | Mô tả |
+|---|---|---|
+| GET | `/api/product` | Lấy tất cả Product |
+| POST | `/api/product/getProduct` | Lấy Product theo parameter `id` |
+| POST | `/api/product/addProduct` | Thêm Product bằng multipart/form-data |
+| PUT | `/api/product/updateProduct?productId={id}` | Sửa Product; file trống giữ ảnh cũ |
+| DELETE | `/api/product/deleteProduct?productId={id}` | Xóa Product |
 
-## Project Structure
-
-```text
-src/main/java/vn/iotstar/
-├── configs/WebConfig.java
-├── controllers/ProductController.java
-├── dto/ProductDTO.java
-├── entity/Product.java
-├── mapper/ProductMapper.java
-├── repository/ProductRepository.java
-├── services/ProductService.java
-├── services/impl/ProductServiceImpl.java
-└── SpringBootApplication.java
-
-src/main/resources/
-├── templates/fragments/{header,footer}.html
-├── templates/layouts/layout.html
-├── templates/products/{list,form}.html
-└── application.properties
-```
-
-## Test Cases
-
-1. Tạo Product không có ảnh.
-2. Tạo Product có một ảnh.
-3. Kiểm tra ảnh hiển thị trong danh sách.
-4. Tìm kiếm theo một phần tên, không phân biệt hoa thường.
-5. Chuyển trang và kiểm tra keyword/page size được giữ lại.
-6. Thay đổi page size giữa 5, 10 và 20.
-7. Sửa Product không chọn ảnh mới và kiểm tra ảnh cũ vẫn còn.
-8. Sửa Product có ảnh mới và kiểm tra ảnh cũ bị xóa.
-9. Xóa Product và kiểm tra cả record lẫn file ảnh bị xóa.
-10. Kiểm tra validation với tên rỗng, giá âm và số lượng âm.
+Ảnh runtime nằm trong `uploads/categories` và `uploads/products`, được truy cập qua `/uploads/{folder}/{filename}`. Khi database trống, ứng dụng chỉ thêm dữ liệu mẫu một lần và không xóa dữ liệu ở các lần khởi động sau.
