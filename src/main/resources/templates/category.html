@@ -1,6 +1,91 @@
-<!doctype html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Quản lý Category</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"><link href="/css/app.css" rel="stylesheet"></head>
-<body><nav class="navbar navbar-expand-lg navbar-dark bg-primary"><div class="container"><a class="navbar-brand fw-bold" href="/">LTWeb Project 1</a><div class="navbar-nav ms-auto"><a class="nav-link active" href="/categories">Danh mục</a><a class="nav-link" href="/products">Sản phẩm</a><a class="nav-link" href="/swagger-ui/index.html">Swagger</a></div></div></nav>
-<main class="container py-4"><div class="d-flex justify-content-between align-items-center mb-3"><div><h1 class="h3 mb-1">Category Management</h1><p class="text-secondary mb-0">Dữ liệu được tải và cập nhật hoàn toàn bằng jQuery AJAX.</p></div><button id="addCategory" class="btn btn-primary">+ Thêm danh mục</button></div><div id="alertBox"></div>
-<div class="card shadow-sm border-0"><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>ID</th><th>Icon</th><th>Category Name</th><th class="text-end">Actions</th></tr></thead><tbody id="categoryRows"><tr><td colspan="4" class="text-center py-4">Đang tải...</td></tr></tbody></table></div></div></main>
-<div class="modal fade" id="categoryModal" tabindex="-1"><div class="modal-dialog"><form class="modal-content" id="categoryForm" enctype="multipart/form-data"><div class="modal-header"><h2 class="modal-title fs-5" id="categoryModalTitle">Thêm danh mục</h2><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><input type="hidden" id="categoryId"><div class="mb-3"><label class="form-label" for="categoryName">Category Name</label><input class="form-control" id="categoryName" name="categoryName" maxlength="200" required></div><div><label class="form-label" for="icon">Icon</label><input class="form-control" type="file" id="icon" name="icon" accept="image/png,image/jpeg,image/gif,image/webp"><div class="form-text">Để trống khi sửa để giữ icon hiện tại.</div></div></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button><button class="btn btn-primary" id="saveCategory" type="submit">Lưu</button></div></form></div></div>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script><script src="/js/category.js"></script></body></html>
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Danh mục hoa | Memory Flower</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
+</head>
+<body class="management-page">
+<nav class="navbar navbar-expand-lg flower-navbar sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="/"><span class="brand-mark" aria-hidden="true">✿</span><span>Memory Flower</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#flowerNav" aria-controls="flowerNav" aria-expanded="false" aria-label="Mở menu"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="flowerNav">
+            <div class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+                <a class="nav-link" href="/">Trang chủ</a>
+                <a class="nav-link active" href="/categories">Danh mục hoa</a>
+                <a class="nav-link" href="/products">Sản phẩm</a>
+                <a class="nav-link" href="/#contact">Liên hệ</a>
+                <a class="nav-link nav-system" href="/swagger-ui/index.html">Tài liệu API</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main class="container page-shell">
+    <div class="page-header">
+        <div>
+            <span class="eyebrow">Khu vực cửa hàng</span>
+            <h1>Quản lý danh mục hoa</h1>
+            <p>Tạo và cập nhật các nhóm sản phẩm như Hoa sinh nhật, Hoa cưới, Hoa chúc mừng...</p>
+        </div>
+        <button id="addCategory" class="btn btn-flower btn-lg"><span aria-hidden="true">＋</span> Thêm danh mục</button>
+    </div>
+
+    <div id="alertBox" aria-live="polite"></div>
+
+    <section class="data-card">
+        <div class="data-card-heading">
+            <div><h2>Bộ sưu tập danh mục</h2><p>Các nhóm hoa hiện có tại cửa hàng</p></div>
+            <span class="data-card-flower" aria-hidden="true">❀</span>
+        </div>
+        <div class="table-responsive">
+            <table class="table flower-table align-middle mb-0">
+                <thead><tr><th>Mã</th><th>Hình ảnh</th><th>Tên danh mục</th><th class="text-end">Thao tác</th></tr></thead>
+                <tbody id="categoryRows"><tr><td colspan="4" class="text-center py-5 text-secondary">Đang chuẩn bị danh mục hoa...</td></tr></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<div class="modal fade flower-modal" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form class="modal-content" id="categoryForm" enctype="multipart/form-data">
+            <div class="modal-header">
+                <div><span class="modal-kicker">Memory Flower</span><h2 class="modal-title" id="categoryModalTitle">Thêm danh mục</h2></div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="categoryId">
+                <div class="mb-4">
+                    <label class="form-label" for="categoryName">Tên danh mục <span class="required">*</span></label>
+                    <input class="form-control form-control-lg" id="categoryName" name="categoryName" maxlength="200" placeholder="Ví dụ: Hoa sinh nhật" required>
+                </div>
+                <div>
+                    <label class="form-label" for="icon">Hình đại diện</label>
+                    <div class="upload-row">
+                        <div class="image-preview" id="categoryImagePreview"><span>Chưa có ảnh</span></div>
+                        <div class="flex-grow-1">
+                            <input class="form-control" type="file" id="icon" name="icon" accept="image/png,image/jpeg,image/gif,image/webp">
+                            <div class="form-text">Chọn ảnh JPG, PNG, GIF hoặc WebP. Khi cập nhật, để trống để giữ ảnh hiện tại.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-cancel" data-bs-dismiss="modal">Để sau</button>
+                <button class="btn btn-flower" id="saveCategory" type="submit">Lưu danh mục</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer class="mini-footer"><div class="container"><span>✿ Memory Flower</span><span>Những đóa hoa nhỏ, những niềm vui thật lớn.</span></div></footer>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/category.js"></script>
+</body>
+</html>

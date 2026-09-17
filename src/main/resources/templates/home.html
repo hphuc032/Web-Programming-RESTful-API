@@ -1,5 +1,105 @@
-<!doctype html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LTWeb REST + AJAX</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"><link href="/css/app.css" rel="stylesheet"></head>
-<body><nav class="navbar navbar-expand-lg navbar-dark bg-primary"><div class="container"><a class="navbar-brand fw-bold" href="/">LTWeb Project 1</a><div class="navbar-nav ms-auto"><a class="nav-link" href="/categories">Danh mục</a><a class="nav-link" href="/products">Sản phẩm</a><a class="nav-link" href="/swagger-ui/index.html">Swagger</a></div></div></nav>
-<main class="container py-5"><div class="p-5 rounded-4 hero text-white"><span class="badge text-bg-light text-primary mb-3">Spring Boot 3.1.5 · Java 17</span><h1 class="display-5 fw-bold">REST API + AJAX CRUD</h1><p class="lead col-lg-8">Quản lý Category và Product theo kiến trúc Controller → Service → Repository → MySQL.</p><div class="d-flex gap-2 flex-wrap"><a class="btn btn-light btn-lg" href="/categories">Quản lý Category</a><a class="btn btn-outline-light btn-lg" href="/products">Quản lý Product</a><a class="btn btn-outline-light btn-lg" href="/swagger-ui/index.html">Mở Swagger</a></div></div>
-<div class="row g-4 mt-2"><div class="col-md-4"><div class="card h-100 shadow-sm border-0"><div class="card-body"><h2 class="h5">Category API</h2><p class="text-secondary mb-0">Đọc, thêm, sửa, xóa và upload icon bằng AJAX.</p></div></div></div><div class="col-md-4"><div class="card h-100 shadow-sm border-0"><div class="card-body"><h2 class="h5">Product API</h2><p class="text-secondary mb-0">Validation, liên kết Category và upload ảnh an toàn.</p></div></div></div><div class="col-md-4"><div class="card h-100 shadow-sm border-0"><div class="card-body"><h2 class="h5">OpenAPI 3</h2><p class="text-secondary mb-0">Thử trực tiếp toàn bộ endpoint tại Swagger UI.</p></div></div></div></div></main></body></html>
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Memory Flower - Hoa tươi tinh tế cho mọi khoảnh khắc yêu thương.">
+    <title>Memory Flower | Hoa tươi cho mọi khoảnh khắc</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg flower-navbar sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="/"><span class="brand-mark" aria-hidden="true">✿</span><span>Memory Flower</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#flowerNav" aria-controls="flowerNav" aria-expanded="false" aria-label="Mở menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="flowerNav">
+            <div class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+                <a class="nav-link active" href="/">Trang chủ</a>
+                <a class="nav-link" href="/categories">Danh mục hoa</a>
+                <a class="nav-link" href="/products">Sản phẩm</a>
+                <a class="nav-link" href="#contact">Liên hệ</a>
+                <a class="nav-link nav-admin" href="#store-tools">Quản lý</a>
+                <a class="nav-link nav-system" href="/swagger-ui/index.html">Tài liệu API</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main>
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-7">
+                    <span class="eyebrow">Hoa tươi được tuyển chọn mỗi ngày</span>
+                    <h1>Gửi yêu thương<br>qua từng bó hoa</h1>
+                    <p class="hero-copy">Memory Flower mang đến những mẫu hoa tươi tinh tế cho sinh nhật, kỷ niệm, chúc mừng và mọi dịp đặc biệt của bạn.</p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a class="btn btn-flower btn-lg" href="/categories">Xem danh mục</a>
+                        <a class="btn btn-soft btn-lg" href="/products">Xem sản phẩm</a>
+                    </div>
+                    <div class="hero-notes"><span>✓ Hoa tươi trong ngày</span><span>✓ Gói hoa theo yêu cầu</span></div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="bouquet-visual" aria-label="Bó hoa Memory Flower">
+                        <div class="bouquet-glow"></div>
+                        <div class="bouquet-emoji" aria-hidden="true">💐</div>
+                        <div class="bouquet-note">
+                            <span class="small text-uppercase">Mỗi ngày một niềm vui</span>
+                            <strong>Trao hoa, trao yêu thương</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-space" id="about">
+        <div class="container">
+            <div class="section-heading text-center mx-auto">
+                <span class="eyebrow">Điều làm nên Memory Flower</span>
+                <h2>Một chút dịu dàng cho ngày thêm đẹp</h2>
+                <p>Chúng tôi chăm chút từ những cành hoa nhỏ nhất để mỗi món quà đều mang một câu chuyện riêng.</p>
+            </div>
+            <div class="row g-4 mt-2">
+                <div class="col-md-4"><article class="feature-card h-100"><span class="feature-icon">🌷</span><h3>Hoa tươi mỗi ngày</h3><p>Hoa được chọn mới mỗi sáng, giữ màu sắc tự nhiên và vẻ đẹp lâu bền.</p></article></div>
+                <div class="col-md-4"><article class="feature-card h-100"><span class="feature-icon feature-icon-lavender">✦</span><h3>Thiết kế tinh tế</h3><p>Mỗi bó hoa được phối màu hài hòa và gói thủ công theo đúng thông điệp bạn gửi trao.</p></article></div>
+                <div class="col-md-4"><article class="feature-card h-100"><span class="feature-icon feature-icon-green">♧</span><h3>Giao nhanh & tận tâm</h3><p>Chuẩn bị cẩn thận, giao đúng hẹn và luôn hỗ trợ bạn trong từng dịp quan trọng.</p></article></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-space store-tools-section" id="store-tools">
+        <div class="container">
+            <div class="row align-items-end g-3 mb-4">
+                <div class="col-lg-8">
+                    <span class="eyebrow">Khu vực cửa hàng</span>
+                    <h2 class="mb-2">Chăm sóc bộ sưu tập hoa</h2>
+                    <p class="section-copy mb-0">Sắp xếp danh mục và cập nhật những mẫu hoa đang có tại Memory Flower.</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-xl-4"><a class="tool-card" href="/categories"><span class="tool-number">01</span><div><h3>Danh mục hoa</h3><p>Sắp xếp các nhóm hoa theo từng dịp và phong cách.</p><span class="tool-link">Khám phá danh mục →</span></div></a></div>
+                <div class="col-md-6 col-xl-4"><a class="tool-card" href="/products"><span class="tool-number">02</span><div><h3>Sản phẩm hoa</h3><p>Cập nhật mẫu hoa, số lượng, giá bán và hình ảnh.</p><span class="tool-link">Xem bộ sưu tập →</span></div></a></div>
+                <div class="col-md-6 col-xl-4"><a class="tool-card tool-card-muted" href="/swagger-ui/index.html"><span class="tool-number">03</span><div><h3>Tài liệu hệ thống</h3><p>Khu vực hỗ trợ dành cho việc vận hành và kiểm thử.</p><span class="tool-link">Mở tài liệu →</span></div></a></div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="flower-footer" id="contact">
+    <div class="container">
+        <div class="row g-4 align-items-start">
+            <div class="col-lg-5"><a class="footer-brand" href="/"><span>✿</span> Memory Flower</a><p class="mt-3 mb-0">Những đóa hoa nhỏ, những niềm vui thật lớn.</p></div>
+            <div class="col-6 col-lg-3"><h2 class="footer-title">Ghé thăm chúng tôi</h2><p>01 Võ Văn Ngân, TP. Thủ Đức<br>TP. Hồ Chí Minh</p></div>
+            <div class="col-6 col-lg-4"><h2 class="footer-title">Liên hệ</h2><p class="mb-1">0909 123 456</p><p class="mb-0">hello@memoryflower.vn</p></div>
+        </div>
+        <div class="footer-bottom">© 2026 Memory Flower. Gửi yêu thương theo cách thật dịu dàng.</div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

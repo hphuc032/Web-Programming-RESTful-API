@@ -1,6 +1,96 @@
-<!doctype html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Quản lý Product</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"><link href="/css/app.css" rel="stylesheet"></head>
-<body><nav class="navbar navbar-expand-lg navbar-dark bg-primary"><div class="container"><a class="navbar-brand fw-bold" href="/">LTWeb Project 1</a><div class="navbar-nav ms-auto"><a class="nav-link" href="/categories">Danh mục</a><a class="nav-link active" href="/products">Sản phẩm</a><a class="nav-link" href="/swagger-ui/index.html">Swagger</a></div></div></nav>
-<main class="container-fluid px-lg-5 py-4"><div class="d-flex justify-content-between align-items-center mb-3"><div><h1 class="h3 mb-1">Product Management</h1><p class="text-secondary mb-0">Category dropdown được tải trực tiếp từ API.</p></div><button id="addProduct" class="btn btn-primary">+ Thêm sản phẩm</button></div><div id="alertBox"></div>
-<div class="card shadow-sm border-0"><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>ID</th><th>Image</th><th>Product Name</th><th>Quantity</th><th>Unit Price</th><th>Discount</th><th>Category</th><th>Status</th><th class="text-end">Actions</th></tr></thead><tbody id="productRows"><tr><td colspan="9" class="text-center py-4">Đang tải...</td></tr></tbody></table></div></div></main>
-<div class="modal fade" id="productModal" tabindex="-1"><div class="modal-dialog modal-lg"><form class="modal-content" id="productForm" enctype="multipart/form-data"><div class="modal-header"><h2 class="modal-title fs-5" id="productModalTitle">Thêm sản phẩm</h2><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><input type="hidden" id="productId"><div class="row g-3"><div class="col-md-8"><label class="form-label" for="productName">Product Name</label><input class="form-control" id="productName" name="productName" maxlength="200" required></div><div class="col-md-4"><label class="form-label" for="categoryId">Category</label><select class="form-select" id="categoryId" name="categoryId" required><option value="">Chọn danh mục</option></select></div><div class="col-md-4"><label class="form-label" for="quantity">Quantity</label><input class="form-control" type="number" min="0" id="quantity" name="quantity" required></div><div class="col-md-4"><label class="form-label" for="unitPrice">Unit Price</label><input class="form-control" type="number" min="0" step="1000" id="unitPrice" name="unitPrice" required></div><div class="col-md-4"><label class="form-label" for="discount">Discount (%)</label><input class="form-control" type="number" min="0" max="100" step="0.1" id="discount" name="discount" required></div><div class="col-md-4"><label class="form-label" for="status">Status</label><select class="form-select" id="status" name="status" required><option value="1">Đang bán</option><option value="0">Ngừng bán</option></select></div><div class="col-md-8"><label class="form-label" for="image">Image</label><input class="form-control" type="file" id="image" name="image" accept="image/png,image/jpeg,image/gif,image/webp"><div class="form-text">Để trống khi sửa để giữ ảnh hiện tại.</div></div><div class="col-12"><label class="form-label" for="description">Description</label><textarea class="form-control" id="description" name="description" maxlength="2000" rows="3"></textarea></div></div></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button><button class="btn btn-primary" id="saveProduct" type="submit">Lưu</button></div></form></div></div>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script><script src="/js/product.js"></script></body></html>
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sản phẩm hoa | Memory Flower</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
+</head>
+<body class="management-page">
+<nav class="navbar navbar-expand-lg flower-navbar sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="/"><span class="brand-mark" aria-hidden="true">✿</span><span>Memory Flower</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#flowerNav" aria-controls="flowerNav" aria-expanded="false" aria-label="Mở menu"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="flowerNav">
+            <div class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+                <a class="nav-link" href="/">Trang chủ</a>
+                <a class="nav-link" href="/categories">Danh mục hoa</a>
+                <a class="nav-link active" href="/products">Sản phẩm</a>
+                <a class="nav-link" href="/#contact">Liên hệ</a>
+                <a class="nav-link nav-system" href="/swagger-ui/index.html">Tài liệu API</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main class="container-fluid px-lg-5 page-shell">
+    <div class="page-header">
+        <div>
+            <span class="eyebrow">Khu vực cửa hàng</span>
+            <h1>Quản lý sản phẩm hoa</h1>
+            <p>Cập nhật các mẫu hoa đang kinh doanh tại cửa hàng.</p>
+        </div>
+        <button id="addProduct" class="btn btn-flower btn-lg"><span aria-hidden="true">＋</span> Thêm sản phẩm</button>
+    </div>
+
+    <div id="alertBox" aria-live="polite"></div>
+
+    <section class="data-card">
+        <div class="data-card-heading">
+            <div><h2>Bộ sưu tập hoa</h2><p>Thông tin sản phẩm đang được trưng bày tại Memory Flower</p></div>
+            <span class="data-card-flower" aria-hidden="true">❀</span>
+        </div>
+        <div class="table-responsive">
+            <table class="table flower-table align-middle mb-0">
+                <thead><tr><th>Mã</th><th>Ảnh</th><th>Tên hoa</th><th>Danh mục</th><th>Giá bán</th><th>Số lượng</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr></thead>
+                <tbody id="productRows"><tr><td colspan="8" class="text-center py-5 text-secondary">Đang chuẩn bị bộ sưu tập hoa...</td></tr></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<div class="modal fade flower-modal" id="productModal" tabindex="-1" aria-labelledby="productModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <form class="modal-content" id="productForm" enctype="multipart/form-data">
+            <div class="modal-header">
+                <div><span class="modal-kicker">Memory Flower</span><h2 class="modal-title" id="productModalTitle">Thêm sản phẩm</h2></div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="productId">
+                <div class="form-section-title">Thông tin sản phẩm</div>
+                <div class="row g-3">
+                    <div class="col-md-8"><label class="form-label" for="productName">Tên hoa <span class="required">*</span></label><input class="form-control" id="productName" name="productName" maxlength="200" placeholder="Ví dụ: Bó hồng Pastel Love" required></div>
+                    <div class="col-md-4"><label class="form-label" for="categoryId">Danh mục <span class="required">*</span></label><select class="form-select" id="categoryId" name="categoryId" required><option value="">Chọn danh mục</option></select></div>
+                    <div class="col-md-4"><label class="form-label" for="quantity">Số lượng <span class="required">*</span></label><input class="form-control" type="number" min="0" id="quantity" name="quantity" placeholder="0" required></div>
+                    <div class="col-md-4"><label class="form-label" for="unitPrice">Giá bán <span class="required">*</span></label><div class="input-group"><input class="form-control" type="number" min="0" step="1000" id="unitPrice" name="unitPrice" placeholder="350000" required><span class="input-group-text">₫</span></div></div>
+                    <div class="col-md-4"><label class="form-label" for="discount">Ưu đãi (%)</label><input class="form-control" type="number" min="0" max="100" step="0.1" id="discount" name="discount" value="0" required></div>
+                    <div class="col-md-4"><label class="form-label" for="status">Trạng thái <span class="required">*</span></label><select class="form-select" id="status" name="status" required><option value="1">Đang bán</option><option value="0">Tạm ngừng</option></select></div>
+                    <div class="col-md-8"><label class="form-label" for="description">Mô tả</label><textarea class="form-control" id="description" name="description" maxlength="2000" rows="3" placeholder="Màu sắc, kiểu dáng và dịp phù hợp..."></textarea></div>
+                </div>
+                <div class="form-section-title mt-4">Hình ảnh sản phẩm</div>
+                <div class="upload-row">
+                    <div class="image-preview image-preview-product" id="productImagePreview"><span>Chưa có ảnh</span></div>
+                    <div class="flex-grow-1">
+                        <label class="form-label" for="image">Chọn hình ảnh</label>
+                        <input class="form-control" type="file" id="image" name="image" accept="image/png,image/jpeg,image/gif,image/webp">
+                        <div class="form-text">Chọn ảnh JPG, PNG, GIF hoặc WebP. Khi cập nhật, để trống để giữ ảnh hiện tại.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-cancel" data-bs-dismiss="modal">Để sau</button>
+                <button class="btn btn-flower" id="saveProduct" type="submit">Lưu sản phẩm</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer class="mini-footer"><div class="container-fluid px-lg-5"><span>✿ Memory Flower</span><span>Những đóa hoa nhỏ, những niềm vui thật lớn.</span></div></footer>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/product.js"></script>
+</body>
+</html>
