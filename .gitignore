@@ -1,0 +1,10 @@
+target/
+
+# Product images generated at runtime
+uploads/products/*
+!uploads/products/.gitkeep
+
+# Local files that may contain credentials
+.env
+application-local.properties
+src/main/resources/application-local.properties
